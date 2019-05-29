@@ -15,6 +15,9 @@ class RegisterPage extends Component {
     };
 
     handleFormSubmit = (evt) => {
+        if (!evt.target.checkValidity()) {
+            alert("form is invalid! ");
+        }
         evt.preventDefault();
     };
 

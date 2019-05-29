@@ -15,10 +15,6 @@ class SignInPage extends Component {
     };
 
     handleFormSubmit = (evt) => {
-        if (!evt.target.checkValidity()) {
-            // form is invalid! so we do nothing
-            alert("form is invalid! ");
-        }
         evt.preventDefault();
     };
 
