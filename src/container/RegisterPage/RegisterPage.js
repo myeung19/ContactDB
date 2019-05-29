@@ -15,10 +15,6 @@ class RegisterPage extends Component {
     };
 
     handleFormSubmit = (evt) => {
-        if (!evt.target.checkValidity()) {
-            // form is invalid! so we do nothing
-            alert("form is invalid! ");
-        }
         evt.preventDefault();
     };
 
@@ -84,7 +80,7 @@ class RegisterPage extends Component {
                         type="submit"
                         color="primary"
                     >
-                        Submit
+                        Register
                     </Button>
                 </form>
             </div>
