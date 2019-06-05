@@ -3,6 +3,7 @@ import styles from "./style";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class HomePage extends Component {
     render() {

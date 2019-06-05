@@ -1,23 +1,16 @@
 import React from 'react';
 import { Switch, Route } from "react-router-dom";
-import GlobalContext from "./container/context/GlobalContext";
+import { Provider } from "react-redux";
+import store from "./stores/store";
 import HomePage from "./container/HomePage/HomePage";
 import RegisterPage from "./container/RegisterPage/RegisterPage";
 import SignInPage from "./container/SignPage/SignInPage";
 import UserHomePage from "./container/HomePage/UserHomePage/UserHomePage";
 import NotFoundPage from "./container/NotFoundPage/NotFoundPage";
 
-const initialState = {
-    isLogin: false,
-    cred: {
-        username: "",
-        password: ""
-    }
-};
-
 function App() {
     return (
-        <GlobalContext.Provider value={ initialState }>
+        <Provider store={store}>
             <Switch>
                 <Route path="/" exact component={ HomePage } />
                 <Route path="/register" component={ RegisterPage } />
@@ -25,7 +18,7 @@ function App() {
                 <Route path="/u/:username" component={ UserHomePage } />
                 <Route component={ NotFoundPage } />
             </Switch>
-        </GlobalContext.Provider>
+        </Provider>
     );
 }
 

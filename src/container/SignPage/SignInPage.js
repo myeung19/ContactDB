@@ -1,80 +1,97 @@
 import React, { Component } from 'react';
-import Button from "@material-ui/core/Button";
-import axios from "axios";
-import style from "../SignPage/style";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { login } from "../../actions/action";
 import TextField from "@material-ui/core/TextField";
-import GlobalContext from "../context/GlobalContext";
+import Button from "@material-ui/core/Button";
+import axios from "../../util/Util";
+import style from "../SignPage/style";
 
 class SignInPage extends Component {
-    state = {};
+    state = {
+        isError: false,
+    };
 
     handleChange = evt => {
         this.setState({
             [evt.target.name]: evt.target.value
         });
-        console.log(this.state);
     };
 
     handleFormSubmit = (evt) => {
         evt.preventDefault();
         const { username, password } = this.state;
+        const cred = {
+            username: username,
+            password: password
+        };
         console.log(username, password);
-        axios.post("http://localhost:8080/login", {}, {
-            auth: {
-                username: username,
-                password: password
-            }
-        }).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
+        axios.post("/login", {}, {
+            auth: cred
+        }).then(() => {
+            this.props.login(true, cred);
+            this.setState({ isLogin: true})
+        }).catch(() => {
+            this.setState({ isError: true })
         })
     };
 
     render() {
+        const { isError, isLogin, username } = this.state;
+
+        if (isLogin) {
+            return <Redirect to={ "/u/" + username } />
+        }
+
         return (
-            <GlobalContext.Consumer>
-                { context => (
-                    <div className={ style.container }>
-                        <h1>Sign in</h1>
-                        <p>{ JSON.stringify(context) }</p>
-                        {
-                            console.log(context)
-                        }
-                        <form noValidate autoComplete="true" onSubmit={ this.handleFormSubmit }>
-                            <TextField
-                                label="Username"
-                                name="username"
-                                fullWidth
-                                placeholder="johnDoe123"
-                                required
-                                className={ style.textField }
-                                onChange={ this.handleChange }
-                                margin="normal"
-                            />
-                            <TextField
-                                label="Password"
-                                name="password"
-                                fullWidth
-                                type="password"
-                                required
-                                className={ style.textField }
-                                onChange={ this.handleChange }
-                                margin="normal"
-                            />
-                            <Button
-                                type="submit"
-                                color="primary"
-                            >
-                                Sign in
-                            </Button>
-                        </form>
-                    </div>
-                )
+            <div className={ style.container }>
+                <h1>Sign in</h1>
+                <p>{ JSON.stringify(this.props) }</p>
+                {
+                    isError ? <p>Error! Incorrect credential or account doesn't exist!</p> : null
                 }
-            </GlobalContext.Consumer>
+                <form noValidate autoComplete="true"
+                      onSubmit={ this.handleFormSubmit }>
+                    <TextField
+                        label="Username"
+                        name="username"
+                        fullWidth
+                        placeholder="johnDoe123"
+                        required
+                        className={ style.textField }
+                        onChange={ this.handleChange }
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Password"
+                        name="password"
+                        fullWidth
+                        type="password"
+                        required
+                        className={ style.textField }
+                        onChange={ this.handleChange }
+                        margin="normal"
+                    />
+                    <Button
+                        type="submit"
+                        color="primary"
+                    >
+                        Sign in
+                    </Button>
+                </form>
+            </div>
         );
     }
 }
 
-export default SignInPage;
+function mapStateToProps(state) {
+    return {
+        isLogin: state.isLogin,
+    };
+}
+
+const mapDispatchToProps = {
+    login
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
