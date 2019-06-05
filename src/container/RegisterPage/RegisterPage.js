@@ -15,10 +15,10 @@ class RegisterPage extends Component {
     };
 
     handleFormSubmit = (evt) => {
+        evt.preventDefault();
         if (!evt.target.checkValidity()) {
             alert("form is invalid! ");
         }
-        evt.preventDefault();
     };
 
     render() {
@@ -27,7 +27,7 @@ class RegisterPage extends Component {
         return (
             <div className={ style.container }>
                 <h1>Register</h1>
-                <form noValidate autoComplete="off" onSubmit={ this.handleFormSubmit }>
+                <form noValidate onSubmit={ this.handleFormSubmit }>
                     <TextField
                         label="Username"
                         name="username"

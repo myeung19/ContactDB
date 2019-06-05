@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class UserHomePage extends Component {
+class NotFoundPage extends Component {
     render() {
         return (
             <div>
-                <p>{ this.props.match.params.username}</p>
+                <p>Page not found</p>
             </div>
         );
     }
 }
 
-export default UserHomePage;
+export default NotFoundPage;
