@@ -38,10 +38,7 @@ class AdminPage extends Component {
 
     handleOnClick = () => {
         const { cred } = store.getState();
-        const keys = Object.keys(this.state);
-        delete keys["data"];
 
-        console.log(keys);
         // keys.map(k => {
         //     axios.post("/admin/setRole", {
         //         username: k,
