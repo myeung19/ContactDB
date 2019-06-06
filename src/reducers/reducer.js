@@ -18,7 +18,7 @@ function rootReducer(state = initialState, action) {
             // };
         case "Logout":
             return {
-                isLogin: action.isLogin,
+                isLogin: false,
                 cred: null
             };
         default:

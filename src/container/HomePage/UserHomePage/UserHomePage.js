@@ -19,6 +19,8 @@ import ProfileIcon from '@material-ui/icons/PermIdentity';
 import ContactIcon from '@material-ui/icons/Contacts';
 import GalleryIcon from '@material-ui/icons/InsertPhoto';
 import SettingIcon from '@material-ui/icons/Settings';
+import AdminIcon from '@material-ui/icons/SupervisorAccount'
+import LogoutIcon from '@material-ui/icons/ExitToApp'
 import ProfilePage from "../../ProfilePage/ProfilePage";
 import ContactPage from "../../ContactPage/ContactPage";
 import GalleryPage from "../../GalleryPage/GalleryPage";
@@ -53,7 +55,8 @@ class UserHomePage extends Component {
         }).then(res => {
             console.log(res.data);
             this.setState({
-                data: res.data
+                data: res.data,
+                roles: res.data.roles
             })
         })
     }
@@ -65,10 +68,10 @@ class UserHomePage extends Component {
     };
 
     render() {
-        const { data, currentPage} = this.state;
+        const { data, roles, currentPage } = this.state;
         const { classes } = this.props;
 
-        if(store.getState().isLogin === false) {
+        if (store.getState().isLogin === false) {
             return <Redirect to="/" />
         }
 
@@ -77,7 +80,7 @@ class UserHomePage extends Component {
         }
 
         let mainContent = null;
-        switch(currentPage) {
+        switch (currentPage) {
             case "Profile":
                 mainContent = <ProfilePage data={ data } />;
                 break;
@@ -95,7 +98,7 @@ class UserHomePage extends Component {
         return (
             <div className={ classes.root }>
                 { !data ? (
-                        <div className={ classes.progressBar}>
+                        <div className={ classes.progressBar }>
                             <ProgressBar />
                         </div>) :
                     (
@@ -120,17 +123,39 @@ class UserHomePage extends Component {
                                         <ListItem
                                             button
                                             key={ index }
-                                            onClick={() => this.pageItemOnClick(el.name)}
+                                            onClick={ () => this.pageItemOnClick(el.name) }
                                         >
-                                            <ListItemIcon >
+                                            <ListItemIcon>
                                                 { el.icon }
                                             </ListItemIcon>
                                             <ListItemText primary={ el.name } />
                                         </ListItem>
                                     )) }
+                                    { roles.includes("ADMIN") ? (
+                                        <ListItem
+                                            button
+                                            key={ 5 }
+                                            onClick={ () => this.pageItemOnClick("Admin") }
+                                        >
+                                            <ListItemIcon>
+                                                <AdminIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Admin"/>
+                                        </ListItem>
+                                    ) : null }
+                                    <ListItem
+                                        button
+                                        key={ 6 }
+                                        onClick={() => { this.props.logout(); this.setState({data: null})}}
+                                    >
+                                        <ListItemIcon>
+                                            <LogoutIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Logout" />
+                                    </ListItem>
                                 </List>
                             </Drawer>
-                            <main className={ classes.content } style={{ marginTop: 50}}>
+                            <main className={ classes.content } style={ { marginTop: 50 } }>
                                 { mainContent }
                             </main>
                         </>

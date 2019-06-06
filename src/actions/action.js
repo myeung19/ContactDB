@@ -6,9 +6,8 @@ export function login(isLogin, cred) {
     };
 }
 
-export function logout(isLogin) {
+export function logout() {
     return {
         type: "Logout",
-        isLogin
     };
 }
