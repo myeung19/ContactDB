@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import style from "./style";
 import { withStyles } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
+import axios from "../../util/Util";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 class RegisterPage extends Component {
-    state = {};
+    state = {
+        msg: null,
+        isSuccessful: false
+    };
 
     handleChange = evt => {
         this.setState({
@@ -19,14 +24,37 @@ class RegisterPage extends Component {
         if (!evt.target.checkValidity()) {
             alert("form is invalid! ");
         }
+
+        const { username, password, re_password, email, re_email } = this.state;
+        if (password !== re_password && email !== re_email) {
+            this.setState({ errorMsg: "Please make sure your re-types matches your password and email!"})
+            return
+        }
+
+        axios.post("/register", {
+            username: username,
+            password: password,
+            email: email
+        }).then(res => {
+            console.log(res);
+            this.setState({ isSuccessful: true})
+        })
     };
 
     render() {
         const { classes } = this.props;
+        const { msg, isSuccessful } = this.state;
+
+        if (isSuccessful) {
+            return <Redirect to="/"/>
+        }
 
         return (
             <div className={ style.container }>
                 <h1>Register</h1>
+                { msg ?
+                    <p>{msg}</p> : null
+                }
                 <form noValidate onSubmit={ this.handleFormSubmit }>
                     <TextField
                         label="Username"
@@ -50,7 +78,7 @@ class RegisterPage extends Component {
                     />
                     <TextField
                         label="Re-type Password"
-                        name="re-password"
+                        name="re_password"
                         fullWidth
                         type="password"
                         required
@@ -71,7 +99,7 @@ class RegisterPage extends Component {
                     />
                     <TextField
                         label="Re-type e-mail"
-                        name="re-email"
+                        name="re_email"
                         fullWidth
                         required
                         type="email"

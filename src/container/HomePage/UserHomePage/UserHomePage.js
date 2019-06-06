@@ -25,6 +25,7 @@ import ProfilePage from "../../ProfilePage/ProfilePage";
 import ContactPage from "../../ContactPage/ContactPage";
 import GalleryPage from "../../GalleryPage/GalleryPage";
 import SettingPage from "../../SettingPage/SettingPage";
+import AdminPage from "../../AdminPage/AdminPage";
 
 const list = [{
     name: "Profile",
@@ -85,13 +86,16 @@ class UserHomePage extends Component {
                 mainContent = <ProfilePage data={ data } />;
                 break;
             case "Contact":
-                mainContent = <ContactPage data={ data } />;
+                mainContent = <ContactPage data={ data.contacts } />;
                 break;
             case "Gallery":
                 mainContent = <GalleryPage />;
                 break;
             case "Setting":
                 mainContent = <SettingPage />;
+                break;
+            case "Admin":
+                mainContent = <AdminPage />;
                 break;
         }
 
@@ -140,13 +144,16 @@ class UserHomePage extends Component {
                                             <ListItemIcon>
                                                 <AdminIcon />
                                             </ListItemIcon>
-                                            <ListItemText primary="Admin"/>
+                                            <ListItemText primary="Admin" />
                                         </ListItem>
                                     ) : null }
                                     <ListItem
                                         button
                                         key={ 6 }
-                                        onClick={() => { this.props.logout(); this.setState({data: null})}}
+                                        onClick={ () => {
+                                            this.props.logout();
+                                            this.setState({ data: null })
+                                        } }
                                     >
                                         <ListItemIcon>
                                             <LogoutIcon />

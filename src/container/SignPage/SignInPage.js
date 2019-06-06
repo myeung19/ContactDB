@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../../actions/action";
 import TextField from "@material-ui/core/TextField";
@@ -30,7 +30,7 @@ class SignInPage extends Component {
             auth: cred
         }).then(() => {
             this.props.login(true, cred);
-            this.setState({ isLogin: true})
+            this.setState({ isLogin: true })
         }).catch(() => {
             this.setState({ isError: true })
         })
@@ -46,7 +46,6 @@ class SignInPage extends Component {
         return (
             <div className={ style.container }>
                 <h1>Sign in</h1>
-                <p>{ JSON.stringify(this.props) }</p>
                 {
                     isError ? <p>Error! Incorrect credential or account doesn't exist!</p> : null
                 }
@@ -77,6 +76,15 @@ class SignInPage extends Component {
                         color="primary"
                     >
                         Sign in
+                    </Button>
+                    <br />
+                    <br />
+                    <br />
+                    <Button
+                        to="/reset"
+                        component={ Link }
+                    >
+                        Reset password
                     </Button>
                 </form>
             </div>

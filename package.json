@@ -8,6 +8,8 @@
     "axios": "^0.19.0",
     "clsx": "latest",
     "react": "^16.8.6",
+    "react-data-grid": "^6.1.0",
+    "react-data-grid-addons": "^6.1.0",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.3",
     "react-redux-hook": "0.0.1",
